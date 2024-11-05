@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_PATH= '/Applications/Docker.app/Contents/Resources/bin/docker'    
+    }
+    
     stages {
         stage('Build') {
             steps {
@@ -19,7 +23,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'docker build -t docker-project:latest .'
+                sh '${DOCKER_PATH} build -t docker-project:latest .'
             }
         }
      }
