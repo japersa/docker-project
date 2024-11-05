@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_PATH= '/Applications/Docker.app/Contents/Resources/bin/docker'    
+        DOCKER_PATH= '/Applications/Docker.app/Contents/Resources/bin/docker'
+        DOCKER_COMPOSE= '/Applications/Docker.app/Contents/Resources/bin/docker-compose'
     }
     
     stages {
@@ -21,9 +22,19 @@ pipeline {
                 echo 'Run test'
             }
         }
-        stage('Deploy') {
+        stage('Build Docker Image') {
             steps {
                 sh '${DOCKER_PATH} build -t docker-project:latest .'
+            }
+        }
+        stage('Build with Docker Compose'){
+            steps {
+                sh '${DOCKER_COMPOSE} build'
+            }
+        }
+        stage('Run docker images'){
+            steps {
+                sh '${DOCKER_COMPOSE} up -d'
             }
         }
      }
