@@ -42,4 +42,15 @@ describe('App test', () => {
         expect(connection.query).toHaveBeenCalledWith('SELECT * FROM users', expect.any(Function));
     });
 
+
+    test('should return 500 if there is an error', async () => {
+        connection.query.mockImplementation((query, callback) => {
+            if (query === 'SELECT * FROM users') callback(new Error('Error executing query'));
+        });
+
+        const response = await request(app).get('/');
+        expect(response.status).toBe(500);
+        expect(response.text).toBe('Error executing query');
+    });
+
 });
