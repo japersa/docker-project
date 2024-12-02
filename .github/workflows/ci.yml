@@ -40,7 +40,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Build Docker image
-        run: docker build -t docker-project .
+        run: docker build -t docker-project:${{ github.sha }} .
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/docker-project:${{ github.sha }}
       - name: Clean up Docker Buildx
